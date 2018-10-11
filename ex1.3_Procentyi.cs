@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace ex1_3
 {
@@ -6,15 +7,13 @@ namespace ex1_3
     {
         public static double Calculate(string userInput)
         {
-            String[] jest = userInput.Split(' ');
-            var a1 = Convert.ToDouble(jest[0]);
-            var a2 = Convert.ToDouble(jest[1]);
-            var a3 = Convert.ToDouble(jest[2]);
-            double s = a1;
-            for (int i = 0; i < a3; i++)
-                s += s * a2 / 1200; 
-            return s;
-           
+            var userPrint = userInput.Split(' ');
+            var sum = Double.Parse(userPrint[0], CultureInfo.InvariantCulture);
+            var mounth = Double.Parse(userPrint[1], CultureInfo.InvariantCulture);
+            var percent = 0.01 * Double.Parse(userPrint[2], CultureInfo.InvariantCulture);
+            sum =  sum*Math.Pow(1+percent/12, mounth);
+            return sum; 
+
         }
         static void Main()
         {
