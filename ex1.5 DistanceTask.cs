@@ -3,27 +3,36 @@ using System.Collections.Specialized;
 
 namespace DistanceTask
 {
-	public static class DistanceTask
-	{
+    public static class DistanceTask
+    {
         // Расстояние от точки (x, y) до отрезка AB с координатами A(ax, ay), B(bx, by)
-	    public static double GetDistanceToSegment(double ax, double ay, double bx, double by, double x, double y)
-		{
-           
-		    var segmentLenght = Math.Sqrt(Math.Pow(bx - ax, 2) + Math.Pow(by - ay, 2));
-		    var vector1Lenght = Math.Sqrt(Math.Pow(ax - x, 2) + Math.Pow(ay - y, 2));
-		    var vector2Lenght = Math.Sqrt(Math.Pow(bx - x, 2) + Math.Pow(by - y, 2));
-		    var p = (segmentLenght + vector1Lenght + vector2Lenght)/2;
-		   
-		    var cos1 = (x - ax)*(bx-ax) + (y-ay)*(by-ay); //векторное произведение через координаты
-		    var cos2 = (x-bx)*(ax-bx) + (y-by)*(ay-by);
-		    var h = 2 * Math.Sqrt(p * (p - segmentLenght) * (p - vector1Lenght) * (p - vector2Lenght))/segmentLenght;
-		    if (cos1 < 0)
-		        return vector1Lenght;
-            else if (cos2 < 0)
-		        return vector2Lenght;
-            else if(segmentLenght==0)
-                return vector2Lenght;
+        public static double GetLenght(double ax, double ay, double bx, double by)
+        {
+            return Math.Sqrt((bx - ax) * (bx - ax) + (by - ay) * (by - ay));
+        }
+
+        public static double GetCos(double ax, double ay, double bx, double by, double x, double y)
+        {
+            return (x - ax) * (bx - ax) + (y - ay) * (by - ay);
+        }
+
+        public static double GetDistanceToSegment(double ax, double ay, double bx, double by, double x, double y)
+        {
+            var vectorABLenght = GetLenght(ax, ay, bx, by);
+            var vectorCALenght = GetLenght(x, y, ax, ay);
+            var vectorCBLenght = GetLenght(x, y, bx, by);
+            var p = (vectorABLenght + vectorCALenght + vectorCBLenght) / 2;
+            var cosACandAB = GetCos(ax, ay, bx, by, x, y); //векторное произведение через координаты
+            var cosBAandBC = GetCos(bx, by, ax, ay, x, y);
+            var h = 2 * Math.Sqrt(p * (p - vectorABLenght) * (p - vectorCALenght) * 
+                                  (p - vectorCBLenght)) / vectorABLenght;
+            if (cosACandAB < 0)
+                return vectorCALenght;
+            else if (cosBAandBC < 0)
+                return vectorCBLenght;
+            else if (vectorABLenght == 0)
+                return vectorCBLenght;
             return h;
-		}
-	}
+        }
+    }
 }
