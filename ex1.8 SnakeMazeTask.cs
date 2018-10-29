@@ -4,28 +4,20 @@
     {
         public static void MoveOut(Robot robot, int width, int height)
         {
-            while (robot.Finished == false)
-                SnakeGo(robot, width, height);
+            while (!robot.Finished)
+            {
+                SnakeGo(robot, width, height, Direction.Right);
+                SnakeGo(robot, width, height, Direction.Left);
+            }
         }
 
-        public static void SnakeGo(Robot robot, int width, int height)
+        public static void SnakeGo(Robot robot, int width, int height, Direction direction)
         {
-            int x = 1;
-            while (x < width - 2)
-            {
-                robot.MoveTo(Direction.Right);
-                x++;
-            }
 
-            robot.MoveTo(Direction.Down);
-            robot.MoveTo(Direction.Down);
-            while (x > 1)
-            {
-                robot.MoveTo(Direction.Left);
-                x--;
-            }
+            for (int x = 1; x < width - 2; x++)
+                robot.MoveTo(direction);
 
-            if (robot.Finished == false)
+            if (!robot.Finished)
             {
                 robot.MoveTo(Direction.Down);
                 robot.MoveTo(Direction.Down);
